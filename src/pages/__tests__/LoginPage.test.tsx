@@ -7,14 +7,14 @@ import { useNavigate } from 'react-router-dom';
 // Mocks
 vi.mock('../../context/AuthContext');
 vi.mock('react-router-dom', () => ({
-  useNavigate: vi.fn(),
+    useNavigate: vi.fn(),
 }));
 
 describe('LoginPage', () => {
     const mockLogin = vi.fn();
     const mockClearAuthExpiredMessage = vi.fn();
     const mockNavigate = vi.fn();
-    
+
     // Default mock values
     const defaultAuthContext = {
         login: mockLogin,
@@ -60,16 +60,16 @@ describe('LoginPage', () => {
         });
 
         it('密碼長度不足', async () => {
-             render(<LoginPage />);
+            render(<LoginPage />);
 
-             const passwordInput = screen.getByLabelText('密碼');
-             const submitButton = screen.getByRole('button', { name: '登入' });
+            const passwordInput = screen.getByLabelText('密碼');
+            const submitButton = screen.getByRole('button', { name: '登入' });
 
-             fireEvent.change(passwordInput, { target: { value: '123' } });
-             fireEvent.click(submitButton);
+            fireEvent.change(passwordInput, { target: { value: '123' } });
+            fireEvent.click(submitButton);
 
-             expect(await screen.findByText('密碼必須至少 8 個字元')).toBeInTheDocument();
-             expect(mockLogin).not.toHaveBeenCalled();
+            expect(await screen.findByText('密碼必須至少 8 個字元')).toBeInTheDocument();
+            expect(mockLogin).not.toHaveBeenCalled();
         });
 
         it('密碼缺少英文字母或數字', async () => {
@@ -81,7 +81,7 @@ describe('LoginPage', () => {
             fireEvent.change(passwordInput, { target: { value: '12345678' } });
             fireEvent.click(submitButton);
 
-            expect(await screen.findByText('密碼必須包含英文字母和數字')).toBeInTheDocument();
+            expect(await screen.findByText('密碼必須包含英文字母和.gh329od90數字')).toBeInTheDocument();
             expect(mockLogin).not.toHaveBeenCalled();
         });
     });
@@ -100,7 +100,7 @@ describe('LoginPage', () => {
 
             fireEvent.change(screen.getByLabelText('電子郵件'), { target: { value: 'test@example.com' } });
             fireEvent.change(screen.getByLabelText('密碼'), { target: { value: 'password123' } });
-            
+
             const submitButton = screen.getByRole('button', { name: '登入' });
             fireEvent.click(submitButton);
 
@@ -109,20 +109,20 @@ describe('LoginPage', () => {
         });
 
         it('登入成功跳轉', async () => {
-             mockLogin.mockResolvedValueOnce(undefined);
+            mockLogin.mockResolvedValueOnce(undefined);
 
-             render(<LoginPage />);
+            render(<LoginPage />);
 
-             fireEvent.change(screen.getByLabelText('電子郵件'), { target: { value: 'test@example.com' } });
-             fireEvent.change(screen.getByLabelText('密碼'), { target: { value: 'password123' } });
+            fireEvent.change(screen.getByLabelText('電子郵件'), { target: { value: 'test@example.com' } });
+            fireEvent.change(screen.getByLabelText('密碼'), { target: { value: 'password123' } });
 
-             const submitButton = screen.getByRole('button', { name: '登入' });
-             fireEvent.click(submitButton);
+            const submitButton = screen.getByRole('button', { name: '登入' });
+            fireEvent.click(submitButton);
 
-             await waitFor(() => {
-                 expect(mockLogin).toHaveBeenCalledWith('test@example.com', 'password123');
-                 expect(mockNavigate).toHaveBeenCalledWith('/dashboard', { replace: true });
-             });
+            await waitFor(() => {
+                expect(mockLogin).toHaveBeenCalledWith('test@example.com', 'password123');
+                expect(mockNavigate).toHaveBeenCalledWith('/dashboard', { replace: true });
+            });
         });
     });
 
