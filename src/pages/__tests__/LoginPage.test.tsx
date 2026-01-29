@@ -81,7 +81,7 @@ describe('LoginPage', () => {
             fireEvent.change(passwordInput, { target: { value: '12345678' } });
             fireEvent.click(submitButton);
 
-            expect(await screen.findByText('密碼必須包含英文字母和.gh329od90數字')).toBeInTheDocument();
+            expect(await screen.findByText('密碼必須包含英文字母和數字')).toBeInTheDocument();
             expect(mockLogin).not.toHaveBeenCalled();
         });
     });
